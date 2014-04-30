@@ -19,7 +19,7 @@ class Transfig < Formula
     # transfig does not like to execute makefiles in parallel
     ENV.deparallelize
 
-    # Patch tranfig/Imakefile
+    # Patch tranfigs/Imakefile
     inreplace "transfig/Imakefile", "XCOMM BINDIR = /usr/bin/X11",
               "BINDIR = #{bin}\n"+     # set install dir for bin
               "USRLIBDIR = #{lib}\n"  # set install dir for lib
@@ -47,6 +47,9 @@ class Transfig < Formula
     inreplace "fig2dev/Imakefile", "XCOMM DDA4 = -DA4", "DDA4 = -DA4"
     inreplace "fig2dev/Imakefile", "FIG2DEV_LIBDIR = /usr/local/lib/fig2dev",
               "FIG2DEV_LIBDIR = #{lib}/fig2dev"
+
+    # Patch fig2dev/dev/genibmgl.c 
+    inreplace "fig2dev/dev/genibmgl.c", "    if (w == current_width) return;", "    if (w == current_width) return 0;"
 
     # generate Makefiles
     system "make clean"
